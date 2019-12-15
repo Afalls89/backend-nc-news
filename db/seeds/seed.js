@@ -17,7 +17,12 @@ exports.seed = function(knex) {
 
 			return Promise.all([topicsInsertions, usersInsertions]);
 		})
-		.then(() => {
+		.then(topicAndUserInsertions => {
+			const formattedArticles = formatDates(articleData);
+
+			const articleInsertions = knex("articles").insert(formattedArticles);
+
+			return Promise.all([articleInsertions]);
 			/* 
       
       Your article data is currently in the incorrect format and will violate your SQL schema. 

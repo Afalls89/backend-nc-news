@@ -7,6 +7,12 @@ exports.formatDates = list => {
 	});
 };
 
-exports.makeRefObj = list => {};
+exports.makeRefObj = list => {
+	if (list.length === 0) return {};
+	return list.reduce((ref, listObj) => {
+		ref[listObj.title] = listObj.article_id;
+		return ref;
+	}, {});
+};
 
 exports.formatComments = (comments, articleRef) => {};
