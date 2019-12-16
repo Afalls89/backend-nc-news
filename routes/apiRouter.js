@@ -1,9 +1,11 @@
 const apiRouter = require("express").Router();
 const topicsRouter = require("./topicsRouter");
+const usersRouter = require("./usersRouter");
 const apiWelcomePage = require("../controllers/api_controller");
 
 // apiRouter.get("/", apiWelcomePage);
 
 apiRouter.use("/topics", topicsRouter);
+apiRouter.use("/users", usersRouter);
 
 module.exports = apiRouter;

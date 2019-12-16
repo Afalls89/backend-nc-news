@@ -55,18 +55,34 @@ describe("API Endpoints", () => {
 			});
 		});
 
-		// describe('/users/:username', () => {
-		//     describe('GET', () => {
-		//         it("return status:200 with an object containing info on the specified username ", () => {
-		// 			return request(app)
-		// 				.get("/api/users/:username")
-		// 				.expect(200)
-		// 				.then(({ body: { username } }) => {
-		// 					expect(username).to.have.keys("", "description");
-		// 					expect(topics).to.be.an("object");
-		// 				});
-		// 	    });
-		//     })
-		// })
+		describe("/users/:username", () => {
+			describe("GET", () => {
+				describe("INVALID METHODS", () => {
+					it("returns status: 405, with object containing message of  Method not allowed", () => {
+						const invalidMethods = ["patch", "put", "delete", "post"];
+						const promises = invalidMethods.map(method => {
+							return request(app)
+								[method]("/api/topics")
+								.expect(405)
+								.then(({ body: { msg } }) => {
+									expect(msg).to.equal("Method not allowed");
+								});
+						});
+						return Promise.all(promises);
+					});
+				});
+
+				it.only("return status:200 with an object containing info on the specified username ", () => {
+					return request(app)
+						.get("/api/users/butter_bridge")
+						.expect(200)
+						.then(({ body: { user } }) => {
+							expect(user).to.have.keys("username", "avatar_url", "name");
+							expect(user).to.be.an("object");
+							expect(user.name).to.equal("jonny");
+						});
+				});
+			});
+		});
 	});
 });
