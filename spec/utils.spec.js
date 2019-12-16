@@ -85,7 +85,7 @@ describe("formatDates", () => {
 	});
 });
 
-describe.only("makeRefObj", () => {
+describe("makeRefObj", () => {
 	it("if provided an empty array return an empty object ", () => {
 		const articles = [];
 
@@ -150,4 +150,145 @@ describe.only("makeRefObj", () => {
 	});
 });
 
-describe("formatComments", () => {});
+describe("formatComments", () => {
+	it("if given an empty array returns a new empty array", () => {
+		const comments = [];
+
+		const refObj = {
+			"They're not exactly dogs, are they?": 1,
+			"Sony Vaio; or, The Laptop": 2
+		};
+
+		expect(formatComments(comments, refObj)).to.deep.equal([]);
+		expect(formatComments(comments, refObj)).to.be.an("array");
+	});
+
+	it("if provided an array of objects return a new array with new objects", () => {
+		const comments = [
+			{
+				body:
+					"Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+				belongs_to: "They're not exactly dogs, are they?",
+				created_by: "butter_bridge",
+				votes: 16,
+				created_at: 1511354163389
+			}
+		];
+
+		const refObj = {
+			"They're not exactly dogs, are they?": 1,
+			"Sony Vaio; or, The Laptop": 2
+		};
+
+		expect(formatComments(comments, refObj)).to.not.equal(comments);
+		expect(formatComments(comments, refObj)[0]).to.not.equal(comments[0]);
+	});
+
+	it("if provided array and reference object, return a new array without manipulating the originals", () => {
+		const comments = [
+			{
+				body:
+					"Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+				belongs_to: "They're not exactly dogs, are they?",
+				created_by: "butter_bridge",
+				votes: 16,
+				created_at: 1511354163389
+			}
+		];
+
+		const refObj = {
+			"Living in the shadow of a great man": 1,
+			"Sony Vaio; or, The Laptop": 2
+		};
+
+		formatComments(comments, refObj);
+
+		expect(comments).to.deep.equal([
+			{
+				body:
+					"Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+				belongs_to: "They're not exactly dogs, are they?",
+				created_by: "butter_bridge",
+				votes: 16,
+				created_at: 1511354163389
+			}
+		]);
+
+		expect(refObj).to.deep.equal({
+			"Living in the shadow of a great man": 1,
+			"Sony Vaio; or, The Laptop": 2
+		});
+	});
+
+	it("if provided an array with objects that contain the key 'created_by' repalce this key with author", () => {
+		const comments = [
+			{
+				body:
+					"Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+				belongs_to: "They're not exactly dogs, are they?",
+				created_by: "butter_bridge",
+				votes: 16,
+				created_at: 1511354163389
+			}
+		];
+
+		const refObj = {
+			"They're not exactly dogs, are they?": 1,
+			"Sony Vaio; or, The Laptop": 2
+		};
+
+		expect(formatComments(comments, refObj)[0]).to.contain.keys("author");
+		expect(formatComments(comments, refObj)[0]).to.not.contain.keys(
+			"created_by"
+		);
+		expect(formatComments(comments, refObj)[0].author).to.equal(
+			"butter_bridge"
+		);
+	});
+
+	it("if provided an array of objects , add the article_id key to ever object. the value should reference the refernece object", () => {
+		const comments = [
+			{
+				body:
+					"Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+				belongs_to: "They're not exactly dogs, are they?",
+				created_by: "butter_bridge",
+				votes: 16,
+				created_at: 1511354163389
+			}
+		];
+
+		const refObj = {
+			"They're not exactly dogs, are they?": 1,
+			"Sony Vaio; or, The Laptop": 2
+		};
+
+		expect(formatComments(comments, refObj)[0]).to.contain.keys("article_id");
+		expect(formatComments(comments, refObj)[0]).to.not.contain.keys(
+			"belongs_to"
+		);
+		expect(formatComments(comments, refObj)[0].article_id).to.equal(1);
+	});
+
+	it("if provided an array of objects with a key of created_at replace its value with a JS timestamp", () => {
+		const comments = [
+			{
+				body:
+					"Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+				belongs_to: "They're not exactly dogs, are they?",
+				created_by: "butter_bridge",
+				votes: 16,
+				created_at: 1511354163389
+			}
+		];
+
+		const refObj = {
+			"They're not exactly dogs, are they?": 1,
+			"Sony Vaio; or, The Laptop": 2
+		};
+
+		expect(`${formatComments(comments, refObj)[0].created_at}`).to.equal(
+			"Wed Nov 22 2017 12:36:03 GMT+0000 (Greenwich Mean Time)"
+		);
+	});
+});
