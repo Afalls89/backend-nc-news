@@ -1,6 +1,10 @@
 process.env.NODE_ENV = "test";
 
-const { expect } = require("chai");
+const chai = require("chai");
+const chaiSorted = require("chai-sorted");
+const { expect } = chai;
+chai.use(chaiSorted);
+
 const request = require("supertest");
 const knex = require("../db/connection");
 
@@ -103,15 +107,59 @@ describe("API Endpoints", () => {
 						.then(({ body: { articles } }) => {
 							expect(articles).to.be.an("array");
 							expect(articles[0]).to.be.an("object");
-							expect(articles[0]).to.have.keys(
+							expect(articles[0]).to.contain.keys(
 								"article_id",
 								"title",
 								"created_at",
 								"topic",
-								"auther",
-								"votes",
-								"comment_count"
+								"author",
+								"votes"
 							);
+						});
+				});
+
+				it('"return status 200  and return array of articles sorted by defualt value of date', () => {
+					return request(app)
+						.get("/api/articles")
+						.expect(200)
+						.then(({ body: { articles } }) => {
+							expect(articles).to.be.sortedBy("created_at");
+						});
+				});
+
+				it('"return status 200  and return array of articles sorted by article_id', () => {
+					return request(app)
+						.get("/api/articles?sort_by=article_id")
+						.expect(200)
+						.then(({ body: { articles } }) => {
+							expect(articles).to.be.sortedBy("article_id");
+						});
+				});
+
+				it('"return status 200  and return array of articles sorted by votes', () => {
+					return request(app)
+						.get("/api/articles?sort_by=votes")
+						.expect(200)
+						.then(({ body: { articles } }) => {
+							expect(articles).to.be.sortedBy("votes");
+						});
+				});
+
+				it("returns status 200 and returns array of articles ordered by default which is descending", () => {
+					return request(app)
+						.get("/api/articles")
+						.expect(200)
+						.then(({ body: { articles } }) => {
+							expect(articles).to.be.descendingBy("created_at");
+						});
+				});
+
+				it.only("returns status 200 and returns array of articles ordered by ascending", () => {
+					return request(app)
+						.get("/api/articles?order=asc")
+						.expect(200)
+						.then(({ body: { articles } }) => {
+							expect(articles).to.be.ascendingBy("created_at");
 						});
 				});
 			});
