@@ -7,6 +7,14 @@ exports.handle404s = (err, req, res, next) => {
 	else next(err);
 };
 
+exports.handle400s = (err, req, res, next) => {
+	const psqlBadRequestCodes = ["22P02", "42703"];
+	if (psqlBadRequestCodes.includes(err.code))
+		res.status(400).send({ msg: "Bad Request" });
+	else next(err);
+};
+
 exports.handle500s = (err, req, res, next) => {
+	console.log(err);
 	res.status(500).send({ msg: "Server Error" });
 };

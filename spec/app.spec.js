@@ -197,6 +197,64 @@ describe("API Endpoints", () => {
 							expect(articles.length).to.equal(1);
 						});
 				});
+
+				it.only("returns status 200 and returns array of articles with a key of comment_count", () => {
+					return request(app)
+						.get("/api/articles")
+						.expect(200)
+						.then(({ body: { articles } }) => {
+							expect(articles).to.be.an("array");
+							expect(articles[0]).to.be.an("object");
+							expect(articles[0]).to.contain.keys(
+								"article_id",
+								"title",
+								"created_at",
+								"topic",
+								"author",
+								"votes",
+								"comment_count"
+							);
+						});
+				});
+
+				it("returns 400 with msg of -Bad Request- when query sort_by is provided with a value that is not a column in database", () => {
+					return request(app)
+						.get("/api/articles?sort_by=notAColumn")
+						.expect(400)
+						.then(({ body: { msg } }) => {
+							expect(msg).to.equal("Bad Request");
+						});
+				});
+
+				it("returns 400 with msg of -Bad Request- when query order is provided with a value that is not asc or desc", () => {
+					return request(app)
+						.get("/api/articles?order=notASCorDESC")
+						.expect(400)
+						.then(({ body: { msg } }) => {
+							console.log(msg);
+							expect(msg).to.equal(
+								"Please specify either asc or desc as the order value"
+							);
+						});
+				});
+
+				it("returns 404 with msg of -Resource Not Found- when query author is provided with a valid value that is not in database", () => {
+					return request(app)
+						.get("/api/articles?author=notInDatabase")
+						.expect(404)
+						.then(({ body: { msg } }) => {
+							expect(msg).to.equal("No articles found for that query");
+						});
+				});
+
+				it("returns 404 with msg of -Resource Not Found- when query topic is provided with a valid value that is not in database", () => {
+					return request(app)
+						.get("/api/articles?topic=notInDatabase")
+						.expect(404)
+						.then(({ body: { msg } }) => {
+							expect(msg).to.equal("No articles found for that query");
+						});
+				});
 			});
 		});
 	});
