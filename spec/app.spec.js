@@ -93,5 +93,28 @@ describe("API Endpoints", () => {
 				});
 			});
 		});
+
+		describe("/articles", () => {
+			describe("GET", () => {
+				it("return status 200 and an object with key articles with value of an varray contianing all articles", () => {
+					return request(app)
+						.get("/api/articles")
+						.expect(200)
+						.then(({ body: { articles } }) => {
+							expect(articles).to.be.an("array");
+							expect(articles[0]).to.be.an("object");
+							expect(articles[0]).to.have.keys(
+								"article_id",
+								"title",
+								"created_at",
+								"topic",
+								"auther",
+								"votes",
+								"comment_count"
+							);
+						});
+				});
+			});
+		});
 	});
 });
