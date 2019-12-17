@@ -62,7 +62,7 @@ describe("API Endpoints", () => {
 						const invalidMethods = ["patch", "put", "delete", "post"];
 						const promises = invalidMethods.map(method => {
 							return request(app)
-								[method]("/api/topics")
+								[method]("/api/users/butter_bridge")
 								.expect(405)
 								.then(({ body: { msg } }) => {
 									expect(msg).to.equal("Method not allowed");
@@ -72,7 +72,7 @@ describe("API Endpoints", () => {
 					});
 				});
 
-				it.only("return status:200 with an object containing info on the specified username ", () => {
+				it("return status:200 with an object containing info on the specified username ", () => {
 					return request(app)
 						.get("/api/users/butter_bridge")
 						.expect(200)
@@ -80,6 +80,15 @@ describe("API Endpoints", () => {
 							expect(user).to.have.keys("username", "avatar_url", "name");
 							expect(user).to.be.an("object");
 							expect(user.name).to.equal("jonny");
+						});
+				});
+
+				it("return status: 404 if provided a valid entry which is not present in the database", () => {
+					return request(app)
+						.get("/api/users/UserNotInDB")
+						.expect(404)
+						.then(({ body: { msg } }) => {
+							expect(msg).to.equal("No user found for username: UserNotInDB");
 						});
 				});
 			});
