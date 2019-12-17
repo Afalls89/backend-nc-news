@@ -99,6 +99,21 @@ describe("API Endpoints", () => {
 		});
 
 		describe("/articles", () => {
+			describe("INVALID METHODS", () => {
+				it("returns status: 405, with object containing message of  Method not allowed", () => {
+					const invalidMethods = ["put", "delete"];
+					const promises = invalidMethods.map(method => {
+						return request(app)
+							[method]("/api/topics")
+							.expect(405)
+							.then(({ body: { msg } }) => {
+								expect(msg).to.equal("Method not allowed");
+							});
+					});
+					return Promise.all(promises);
+				});
+			});
+
 			describe("GET", () => {
 				it("return status 200 and an object with key articles with value of an varray contianing all articles", () => {
 					return request(app)
@@ -154,12 +169,32 @@ describe("API Endpoints", () => {
 						});
 				});
 
-				it.only("returns status 200 and returns array of articles ordered by ascending", () => {
+				it("returns status 200 and returns array of articles ordered by ascending", () => {
 					return request(app)
 						.get("/api/articles?order=asc")
 						.expect(200)
 						.then(({ body: { articles } }) => {
 							expect(articles).to.be.ascendingBy("created_at");
+						});
+				});
+
+				it("returns status 200 and returns array of articles where auther is filtered by username", () => {
+					return request(app)
+						.get("/api/articles?author=butter_bridge")
+						.expect(200)
+						.then(({ body: { articles } }) => {
+							expect(articles[1].author).to.equal("butter_bridge");
+							expect(articles.length).to.equal(3);
+						});
+				});
+
+				it("returns status 200 and returns array of articles where topic is filtered by topic quesry value", () => {
+					return request(app)
+						.get("/api/articles?topic=cats")
+						.expect(200)
+						.then(({ body: { articles } }) => {
+							expect(articles[0].topic).to.equal("cats");
+							expect(articles.length).to.equal(1);
 						});
 				});
 			});

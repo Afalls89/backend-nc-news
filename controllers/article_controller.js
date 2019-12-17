@@ -1,8 +1,8 @@
-const { fetchAllArticles } = require("../models/article_model");
+const { fetchArticles } = require("../models/article_model");
 
-exports.sendAllArticles = (req, res, next) => {
-	console.log("you are in the sendAllArticles controller function");
-	fetchAllArticles(req.query)
+exports.sendArticles = (req, res, next) => {
+	console.log("you are in the sendArticles controller function");
+	fetchArticles(req.query)
 		.then(articles => {
 			res.status(200).send(articles);
 		})
