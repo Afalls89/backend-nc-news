@@ -138,7 +138,7 @@ describe("API Endpoints", () => {
 						.get("/api/articles")
 						.expect(200)
 						.then(({ body: { articles } }) => {
-							expect(articles).to.be.sortedBy("created_at");
+							expect(articles).to.be.descendingBy("created_at");
 						});
 				});
 
@@ -147,7 +147,7 @@ describe("API Endpoints", () => {
 						.get("/api/articles?sort_by=article_id")
 						.expect(200)
 						.then(({ body: { articles } }) => {
-							expect(articles).to.be.sortedBy("article_id");
+							expect(articles).to.be.descendingBy("article_id");
 						});
 				});
 
@@ -156,7 +156,7 @@ describe("API Endpoints", () => {
 						.get("/api/articles?sort_by=votes")
 						.expect(200)
 						.then(({ body: { articles } }) => {
-							expect(articles).to.be.sortedBy("votes");
+							expect(articles).to.be.descendingBy("votes");
 						});
 				});
 
@@ -198,7 +198,7 @@ describe("API Endpoints", () => {
 						});
 				});
 
-				it.only("returns status 200 and returns array of articles with a key of comment_count", () => {
+				it("returns status 200 and returns array of articles with a key of comment_count", () => {
 					return request(app)
 						.get("/api/articles")
 						.expect(200)
@@ -253,6 +253,28 @@ describe("API Endpoints", () => {
 						.expect(404)
 						.then(({ body: { msg } }) => {
 							expect(msg).to.equal("No articles found for that query");
+						});
+				});
+			});
+		});
+
+		describe("articles/:article_id", () => {
+			describe("GET", () => {
+				it.only("returns status 200 with an object with key article_id with an object as a value containing article info", () => {
+					return request(app)
+						.get("/api/articles/2")
+						.expect(200)
+						.then(({ body: { article } }) => {
+							expect(article).to.be.an("object");
+							expect(articles).to.contain.keys(
+								"article_id",
+								"title",
+								"created_at",
+								"topic",
+								"author",
+								"votes",
+								"comment_count"
+							);
 						});
 				});
 			});
