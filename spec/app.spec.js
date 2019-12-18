@@ -601,6 +601,34 @@ describe("API Endpoints", () => {
 						});
 				});
 			});
+
+			describe("DELETE", () => {
+				it("return status 204 with no content", () => {
+					return request(app)
+						.delete("/api/comments/1")
+						.expect(204);
+				});
+
+				it("returns status 404 when given valid input for article_id but not found in database", () => {
+					return request(app)
+						.delete("/api/comments/1000")
+						.expect(404)
+						.then(({ body: { msg } }) => {
+							expect(msg).to.equal(
+								"comment not deleted, Resource not found for comment_id: 1000"
+							);
+						});
+				});
+
+				it.only("returns status 400 when given invalid input for comment_id", () => {
+					return request(app)
+						.delete("/api/comments/two")
+						.expect(400)
+						.then(({ body: { msg } }) => {
+							expect(msg).to.equal("Bad Request");
+						});
+				});
+			});
 		});
 	});
 });
