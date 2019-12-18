@@ -1,6 +1,7 @@
 const {
 	fetchCommentsByArticle_Id,
-	insertCommentByArticle_Id
+	insertCommentByArticle_Id,
+	updateCommentByComment_Id
 } = require("../models/comment_model");
 const { checkArticleExists } = require("../models/article_model");
 
@@ -21,6 +22,15 @@ exports.uploadCommentByArticle_Id = (req, res, next) => {
 	insertCommentByArticle_Id(req.body, req.params)
 		.then(comment => {
 			res.status(201).send(comment);
+		})
+		.catch(next);
+};
+
+exports.modifyCommentByComment_Id = (req, res, next) => {
+	console.log("you are in the modifyCommentByComment_Id controller function");
+	updateCommentByComment_Id(req.body, req.params)
+		.then(comment => {
+			res.status(200).send({ comment });
 		})
 		.catch(next);
 };

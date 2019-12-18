@@ -319,7 +319,7 @@ describe("API Endpoints", () => {
 							expect(article.votes).to.equal(1);
 						});
 				});
-				it("returns status 200 and an object with key of article and value of object representing article 2 with update vote = 1", () => {
+				it("returns status 200 and an object with key of article and value of object representing article 1 with update votes = 100", () => {
 					return request(app)
 						.patch("/api/articles/1")
 						.send({ inc_vote: 0 })
@@ -329,7 +329,7 @@ describe("API Endpoints", () => {
 						});
 				});
 
-				it("returns status 200 and an object with key of article and value of object representing article 2 with update vote = 1", () => {
+				it("returns status 200 and an object with key of article and value of object representing article 1 with update vote = 99", () => {
 					return request(app)
 						.patch("/api/articles/1")
 						.send({ inc_vote: -1 })
@@ -518,6 +518,69 @@ describe("API Endpoints", () => {
 							user: "butter_bridge",
 							body: "ITS CHRISTMAS"
 						})
+						.expect(400)
+						.then(({ body: { msg } }) => {
+							expect(msg).to.equal("Bad Request");
+						});
+				});
+			});
+		});
+
+		describe("/api/comments/:comment_id", () => {
+			describe("PATCH", () => {
+				it.only("returns status 200 and an object with key of comment and value of object representing updateed comment", () => {
+					return request(app)
+						.patch("/api/comments/1")
+						.send({ inc_vote: 1 })
+						.expect(200)
+						.then(({ body: { comment } }) => {
+							expect(comment.votes).to.equal(17);
+						});
+				});
+				// it("returns status 200 and an object with key of comment and value of object representing updateed comment", () => {
+				// 	return request(app)
+				// 		.patch("/api/articles/1")
+				// 		.send({ inc_vote: 0 })
+				// 		.expect(200)
+				// 		.then(({ body: { article } }) => {
+				// 			expect(article.votes).to.equal(100);
+				// 		});
+				// });
+
+				// it("returns status 200 and an object with key of article and value of object representing article 1 with update vote = 99", () => {
+				// 	return request(app)
+				// 		.patch("/api/articles/1")
+				// 		.send({ inc_vote: -1 })
+				// 		.expect(200)
+				// 		.then(({ body: { article } }) => {
+				// 			expect(article.votes).to.equal(99);
+				// 		});
+				// });
+
+				it("returns status 404 when given valid input for article_id but not found in database", () => {
+					return request(app)
+						.patch("/api/articles/1000")
+						.send({ inc_vote: 1 })
+						.expect(404)
+						.then(({ body: { msg } }) => {
+							expect(msg).to.equal("Resource not found for article_id: 1000");
+						});
+				});
+
+				it("returns status 400 when given invalid input for article_id", () => {
+					return request(app)
+						.patch("/api/articles/two")
+						.send({ inc_vote: 1 })
+						.expect(400)
+						.then(({ body: { msg } }) => {
+							expect(msg).to.equal("Bad Request");
+						});
+				});
+
+				it("returns status 400 when given invalid input in the request body", () => {
+					return request(app)
+						.patch("/api/articles/2")
+						.send({ inc_vote: "one" })
 						.expect(400)
 						.then(({ body: { msg } }) => {
 							expect(msg).to.equal("Bad Request");

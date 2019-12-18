@@ -37,3 +37,20 @@ exports.insertCommentByArticle_Id = (dataToInsert, { article_id }) => {
 			})
 	);
 };
+
+exports.updateCommentByComment_Id = ({ inc_vote }, { comment_id }) => {
+	return knex
+		.from("comments")
+		.where("comment_id", "=", comment_id)
+		.increment("votes", inc_vote)
+		.returning("*")
+		.then(comment => {
+			if (comment.length === 0) {
+				return Promise.reject({
+					status: 404,
+					msg: `Resource not found for comment_id: ${comment_id}`
+				});
+			}
+			return comment[0];
+		});
+};
