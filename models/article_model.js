@@ -71,6 +71,12 @@ exports.updateArticleByID = ({ article_id }, { inc_vote }) => {
 		.increment("votes", inc_vote)
 		.returning("*")
 		.then(article => {
+			if (article.length === 0) {
+				return Promise.reject({
+					status: 404,
+					msg: `Resource not found for article_id: ${article_id}`
+				});
+			}
 			return article[0];
 		});
 };

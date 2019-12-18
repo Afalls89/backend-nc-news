@@ -339,6 +339,36 @@ describe("API Endpoints", () => {
 							expect(article.votes).to.equal(99);
 						});
 				});
+
+				it("returns status 404 when given valid input for article_id but not found in database", () => {
+					return request(app)
+						.patch("/api/articles/1000")
+						.send({ inc_vote: 1 })
+						.expect(404)
+						.then(({ body: { msg } }) => {
+							expect(msg).to.equal("Resource not found for article_id: 1000");
+						});
+				});
+
+				it("returns status 400 when given invalid input for article_id", () => {
+					return request(app)
+						.patch("/api/articles/two")
+						.send({ inc_vote: 1 })
+						.expect(400)
+						.then(({ body: { msg } }) => {
+							expect(msg).to.equal("Bad Request");
+						});
+				});
+
+				it("returns status 400 when given invalid input in the request body", () => {
+					return request(app)
+						.patch("/api/articles/2")
+						.send({ inc_vote: "one" })
+						.expect(400)
+						.then(({ body: { msg } }) => {
+							expect(msg).to.equal("Bad Request");
+						});
+				});
 			});
 		});
 	});
