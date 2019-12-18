@@ -6,6 +6,10 @@ const {
 	modifyArticleByID
 } = require("../controllers/article_controller");
 
+const {
+	sendCommentsByArticle_Id
+} = require("../controllers/comment_controller");
+
 articlesRouter
 	.route("/")
 	.get(sendArticles)
@@ -15,6 +19,11 @@ articlesRouter
 	.route("/:article_id")
 	.get(sendArticleByArticle_Id)
 	.patch(modifyArticleByID)
+	.all(handle405s);
+
+articlesRouter
+	.route("/:article_id/comments")
+	.get(sendCommentsByArticle_Id)
 	.all(handle405s);
 
 module.exports = articlesRouter;

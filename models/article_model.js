@@ -80,3 +80,18 @@ exports.updateArticleByID = ({ article_id }, { inc_vote }) => {
 			return article[0];
 		});
 };
+
+exports.checkArticleExists = ({ article_id }) => {
+	console.log("you are in the checkArticleExists  model function");
+	return knex
+		.from("articles")
+		.select("*")
+		.where({ article_id })
+		.then(([article]) => {
+			if (!article)
+				return Promise.reject({
+					status: 404,
+					msg: `Resource not found for article_id: ${article_id}`
+				});
+		});
+};

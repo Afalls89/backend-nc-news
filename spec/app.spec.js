@@ -371,5 +371,67 @@ describe("API Endpoints", () => {
 				});
 			});
 		});
+
+		describe("/api/articles/:article_id/comments", () => {
+			describe("INVALID METHODS", () => {
+				it("returns status: 405, with object containing message of  Method not allowed", () => {
+					const invalidMethods = ["put", "delete", "patch"];
+					const promises = invalidMethods.map(method => {
+						return request(app)
+							[method]("/api/articles/1/comments")
+							.expect(405)
+							.then(({ body: { msg } }) => {
+								expect(msg).to.equal("Method not allowed");
+							});
+					});
+					return Promise.all(promises);
+				});
+			});
+			describe("GET", () => {
+				it("returns status 200 and object with key comments with a value of an array of comment objects for the article_id ", () => {
+					return request(app)
+						.get("/api/articles/1/comments")
+						.expect(200)
+						.then(({ body: { comments } }) => {
+							expect(comments).to.be.an("array");
+							expect(comments[0]).to.be.an("object");
+							expect(comments[0]).to.contain.keys(
+								"comment_id",
+								"created_at",
+								"author",
+								"votes"
+							);
+						});
+				});
+
+				it("returns status 200 and object with key comments with a value of an array of comment objects for the article_id, givres empty array if article has no comments ", () => {
+					return request(app)
+						.get("/api/articles/2/comments")
+						.expect(200)
+						.then(({ body: { comments } }) => {
+							expect(comments).to.be.an("array");
+							expect(comments.length).to.equal(0);
+						});
+				});
+
+				it("returns status 404 when given valid input but not found in database", () => {
+					return request(app)
+						.get("/api/articles/1000/comments")
+						.expect(404)
+						.then(({ body: { msg } }) => {
+							expect(msg).to.equal("Resource not found for article_id: 1000");
+						});
+				});
+
+				it("returns status 400 when given invalid input for article_id", () => {
+					return request(app)
+						.get("/api/articles/two/comments")
+						.expect(400)
+						.then(({ body: { msg } }) => {
+							expect(msg).to.equal("Bad Request");
+						});
+				});
+			});
+		});
 	});
 });
