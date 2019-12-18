@@ -231,7 +231,6 @@ describe("API Endpoints", () => {
 						.get("/api/articles?order=notASCorDESC")
 						.expect(400)
 						.then(({ body: { msg } }) => {
-							console.log(msg);
 							expect(msg).to.equal(
 								"Please specify either asc or desc as the order value"
 							);
@@ -429,6 +428,43 @@ describe("API Endpoints", () => {
 						.expect(400)
 						.then(({ body: { msg } }) => {
 							expect(msg).to.equal("Bad Request");
+						});
+				});
+
+				it('"return status 200  and return array of comments sorted by defualt value of date', () => {
+					return request(app)
+						.get("/api/articles/1/comments")
+						.expect(200)
+						.then(({ body: { comments } }) => {
+							expect(comments).to.be.descendingBy("created_at");
+						});
+				});
+
+				it('"return status 200  and return array of articles sorted by article_id', () => {
+					return request(app)
+						.get("/api/articles/1/comments?sort_by=votes")
+						.expect(200)
+						.then(({ body: { comments } }) => {
+							console.log(comments);
+							expect(comments).to.be.descendingBy("votes");
+						});
+				});
+
+				it("returns status 200 and returns array of articles ordered by default which is descending", () => {
+					return request(app)
+						.get("/api/articles/1/comments")
+						.expect(200)
+						.then(({ body: { comments } }) => {
+							expect(comments).to.be.descendingBy("created_at");
+						});
+				});
+
+				it("returns status 200 and returns array of articles ordered by ascending", () => {
+					return request(app)
+						.get("/api/articles/1/comments?order=asc")
+						.expect(200)
+						.then(({ body: { comments } }) => {
+							expect(comments).to.be.ascendingBy("created_at");
 						});
 				});
 			});
