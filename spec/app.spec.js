@@ -468,6 +468,62 @@ describe("API Endpoints", () => {
 						});
 				});
 			});
+
+			describe("POST", () => {
+				it("returns status 201 and object with key of comment and value object of entered comment", () => {
+					return request(app)
+						.post("/api/articles/2/comments")
+						.expect(201)
+						.send({
+							username: "butter_bridge",
+							body: "ITS CHRISTMAS"
+						})
+						.then(({ body: { comment } }) => {
+							expect(comment).to.be.an("object");
+							expect(comment).to.contain.keys("comment_id", "author", "body");
+							expect(comment.author).to.equal("butter_bridge");
+						});
+				});
+
+				it("returns status 404 when given valid input for article_id but not found in database", () => {
+					return request(app)
+						.post("/api/articles/1000/comments")
+						.send({
+							username: "butter_bridge",
+							body: "ITS CHRISTMAS"
+						})
+						.expect(400)
+						.then(({ body: { msg } }) => {
+							expect(msg).to.equal("Bad Request");
+						});
+				});
+
+				it("returns status 400 when given invalid input for article_id", () => {
+					return request(app)
+						.post("/api/articles/two/comments")
+						.send({
+							username: "butter_bridge",
+							body: "ITS CHRISTMAS"
+						})
+						.expect(400)
+						.then(({ body: { msg } }) => {
+							expect(msg).to.equal("Bad Request");
+						});
+				});
+
+				it("returns status 400 when given invalid input in the request body", () => {
+					return request(app)
+						.post("/api/articles/2/comments")
+						.send({
+							user: "butter_bridge",
+							body: "ITS CHRISTMAS"
+						})
+						.expect(400)
+						.then(({ body: { msg } }) => {
+							expect(msg).to.equal("Bad Request");
+						});
+				});
+			});
 		});
 	});
 });

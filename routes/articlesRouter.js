@@ -7,7 +7,8 @@ const {
 } = require("../controllers/article_controller");
 
 const {
-	sendCommentsByArticle_Id
+	sendCommentsByArticle_Id,
+	uploadCommentByArticle_Id
 } = require("../controllers/comment_controller");
 
 articlesRouter
@@ -24,6 +25,7 @@ articlesRouter
 articlesRouter
 	.route("/:article_id/comments")
 	.get(sendCommentsByArticle_Id)
+	.post(uploadCommentByArticle_Id)
 	.all(handle405s);
 
 module.exports = articlesRouter;

@@ -11,3 +11,29 @@ exports.fetchCommentsByArticle_Id = (
 		.where({ article_id })
 		.orderBy(sort_by, order);
 };
+
+exports.insertCommentByArticle_Id = (dataToInsert, { article_id }) => {
+	console.log("you are in the insertCommentByArticle_Id  model function");
+	const formattedData = { ...dataToInsert };
+	formattedData.author = dataToInsert.username;
+	formattedData.article_id = article_id;
+	delete formattedData.username;
+
+	console.log(formattedData);
+	return (
+		knex
+			.insert(formattedData)
+			.into("comments")
+			// .where({ article_id })
+			.returning("*")
+			.then(comment => {
+				if (comment.length === 0) {
+					return Promise.reject({
+						status: 404,
+						msg: "No articles found for that query"
+					});
+				}
+				return { comment: comment[0] };
+			})
+	);
+};
