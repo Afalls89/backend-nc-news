@@ -260,13 +260,13 @@ describe("API Endpoints", () => {
 
 		describe("articles/:article_id", () => {
 			describe("GET", () => {
-				it.only("returns status 200 with an object with key article_id with an object as a value containing article info", () => {
+				it("returns status 200 with an object with key article_id with an object as a value containing article info", () => {
 					return request(app)
 						.get("/api/articles/2")
 						.expect(200)
 						.then(({ body: { article } }) => {
 							expect(article).to.be.an("object");
-							expect(articles).to.contain.keys(
+							expect(article).to.contain.keys(
 								"article_id",
 								"title",
 								"created_at",
@@ -275,6 +275,24 @@ describe("API Endpoints", () => {
 								"votes",
 								"comment_count"
 							);
+						});
+				});
+
+				it("returns status 404 when given valid input but not found in database", () => {
+					return request(app)
+						.get("/api/articles/1000")
+						.expect(404)
+						.then(({ body: { msg } }) => {
+							expect(msg).to.equal("Resource not found for article_id: 1000");
+						});
+				});
+
+				it("returns status 400 when given invalid input for article_id", () => {
+					return request(app)
+						.get("/api/articles/two")
+						.expect(400)
+						.then(({ body: { msg } }) => {
+							expect(msg).to.equal("Bad Request");
 						});
 				});
 			});

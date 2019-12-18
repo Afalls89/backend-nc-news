@@ -8,6 +8,10 @@ const {
 articlesRouter
 	.route("/")
 	.get(sendArticles)
+	.all(handle405s);
+
+articlesRouter
+	.route("/:article_id")
 	.get(sendArticleByArticle_Id)
 	.all(handle405s);
 

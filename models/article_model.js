@@ -42,3 +42,23 @@ exports.fetchArticles = ({
 			return articles;
 		});
 };
+
+exports.fetchArticleByArticle_Id = ({ article_id }) => {
+	console.log("you are in the fetchArticleByArticle_Id model function");
+	return knex
+		.select("articles.*")
+		.from("articles")
+		.count({ comment_count: "comment_id" })
+		.leftJoin("comments", "articles.article_id", "comments.article_id")
+		.groupBy("articles.article_id")
+		.where({ "articles.article_id": article_id })
+		.then(article => {
+			if (article.length === 0) {
+				return Promise.reject({
+					status: 404,
+					msg: `Resource not found for article_id: ${article_id}`
+				});
+			}
+			return article[0];
+		});
+};
