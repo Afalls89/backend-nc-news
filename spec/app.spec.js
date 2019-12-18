@@ -101,10 +101,10 @@ describe("API Endpoints", () => {
 		describe("/articles", () => {
 			describe("INVALID METHODS", () => {
 				it("returns status: 405, with object containing message of  Method not allowed", () => {
-					const invalidMethods = ["put", "delete"];
+					const invalidMethods = ["put", "delete", "post", "patch"];
 					const promises = invalidMethods.map(method => {
 						return request(app)
-							[method]("/api/topics")
+							[method]("/api/articles")
 							.expect(405)
 							.then(({ body: { msg } }) => {
 								expect(msg).to.equal("Method not allowed");
@@ -259,6 +259,20 @@ describe("API Endpoints", () => {
 		});
 
 		describe("articles/:article_id", () => {
+			describe("INVALID METHODS", () => {
+				it("returns status: 405, with object containing message of  Method not allowed", () => {
+					const invalidMethods = ["put", "delete"];
+					const promises = invalidMethods.map(method => {
+						return request(app)
+							[method]("/api/articles/1")
+							.expect(405)
+							.then(({ body: { msg } }) => {
+								expect(msg).to.equal("Method not allowed");
+							});
+					});
+					return Promise.all(promises);
+				});
+			});
 			describe("GET", () => {
 				it("returns status 200 with an object with key article_id with an object as a value containing article info", () => {
 					return request(app)
@@ -293,6 +307,36 @@ describe("API Endpoints", () => {
 						.expect(400)
 						.then(({ body: { msg } }) => {
 							expect(msg).to.equal("Bad Request");
+						});
+				});
+			});
+			describe("PATCH", () => {
+				it("returns status 200 and an object with key of article and value of object representing article 2 with update vote = 1", () => {
+					return request(app)
+						.patch("/api/articles/2")
+						.send({ inc_vote: 1 })
+						.expect(200)
+						.then(({ body: { article } }) => {
+							expect(article.votes).to.equal(1);
+						});
+				});
+				it("returns status 200 and an object with key of article and value of object representing article 2 with update vote = 1", () => {
+					return request(app)
+						.patch("/api/articles/1")
+						.send({ inc_vote: 0 })
+						.expect(200)
+						.then(({ body: { article } }) => {
+							expect(article.votes).to.equal(100);
+						});
+				});
+
+				it("returns status 200 and an object with key of article and value of object representing article 2 with update vote = 1", () => {
+					return request(app)
+						.patch("/api/articles/1")
+						.send({ inc_vote: -1 })
+						.expect(200)
+						.then(({ body: { article } }) => {
+							expect(article.votes).to.equal(99);
 						});
 				});
 			});

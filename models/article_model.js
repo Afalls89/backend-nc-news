@@ -62,3 +62,15 @@ exports.fetchArticleByArticle_Id = ({ article_id }) => {
 			return article[0];
 		});
 };
+
+exports.updateArticleByID = ({ article_id }, { inc_vote }) => {
+	console.log("you are in the updateArticleByID  model function");
+	return knex
+		.from("articles")
+		.where("article_id", "=", article_id)
+		.increment("votes", inc_vote)
+		.returning("*")
+		.then(article => {
+			return article[0];
+		});
+};
