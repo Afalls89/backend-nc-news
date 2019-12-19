@@ -31,6 +31,7 @@ exports.modifyCommentByComment_Id = (req, res, next) => {
 	console.log("you are in the modifyCommentByComment_Id controller function");
 	updateCommentByComment_Id(req.body, req.params)
 		.then(comment => {
+			console.log(JSON.stringify({ comment }));
 			res.status(200).send({ comment });
 		})
 		.catch(next);

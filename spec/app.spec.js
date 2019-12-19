@@ -29,6 +29,28 @@ describe("API Endpoints", () => {
 	});
 
 	describe("/api", () => {
+		describe("INVALID METHODS", () => {
+			it("returns status: 405, with object containing message of  Method not allowed", () => {
+				const invalidMethods = ["patch", "put", "delete", "post"];
+				const promises = invalidMethods.map(method => {
+					return request(app)
+						[method]("/api")
+						.expect(405)
+						.then(({ body: { msg } }) => {
+							expect(msg).to.equal("Method not allowed");
+						});
+				});
+				return Promise.all(promises);
+			});
+		});
+		it("returns status 200 and a JSON file of all endpoints", () => {
+			return request(app)
+				.get("/api")
+				.expect(200)
+				.then(endpoints => {
+					expect(endpoints).to.be.an("object");
+				});
+		});
 		describe("/topics", () => {
 			describe("GET", () => {
 				it("return status:200 with all topics ", () => {
@@ -440,7 +462,7 @@ describe("API Endpoints", () => {
 						});
 				});
 
-				it('"return status 200  and return array of articles sorted by article_id', () => {
+				it('"return status 200  and return array of comments sorted by article_id', () => {
 					return request(app)
 						.get("/api/articles/1/comments?sort_by=votes")
 						.expect(200)
@@ -450,7 +472,7 @@ describe("API Endpoints", () => {
 						});
 				});
 
-				it("returns status 200 and returns array of articles ordered by default which is descending", () => {
+				it("returns status 200 and returns array of comments ordered by default which is descending", () => {
 					return request(app)
 						.get("/api/articles/1/comments")
 						.expect(200)
@@ -459,7 +481,7 @@ describe("API Endpoints", () => {
 						});
 				});
 
-				it("returns status 200 and returns array of articles ordered by ascending", () => {
+				it("returns status 200 and returns array of comments ordered by ascending", () => {
 					return request(app)
 						.get("/api/articles/1/comments?order=asc")
 						.expect(200)
@@ -620,7 +642,7 @@ describe("API Endpoints", () => {
 						});
 				});
 
-				it.only("returns status 400 when given invalid input for comment_id", () => {
+				it("returns status 400 when given invalid input for comment_id", () => {
 					return request(app)
 						.delete("/api/comments/two")
 						.expect(400)
