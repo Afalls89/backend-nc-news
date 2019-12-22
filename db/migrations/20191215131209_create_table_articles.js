@@ -1,17 +1,23 @@
 exports.up = function(knex) {
-	console.log("create articles table");
 	return knex.schema.createTable("articles", articlesTable => {
-		articlesTable.increments("article_id").primary();
-		articlesTable.string("title");
-		articlesTable.string("body", 2000);
+		articlesTable.increments("article_id");
+		articlesTable.string("title").notNullable();
+		articlesTable.string("body", 2000).notNullable();
 		articlesTable.integer("votes").defaultTo(0);
-		articlesTable.string("topic").references("topics.slug");
-		articlesTable.string("author").references("users.username");
-		articlesTable.timestamp("created_at", { useTz: false });
+		articlesTable
+			.string("topic")
+			.references("topics.slug")
+			.notNullable();
+		articlesTable
+			.string("author")
+			.references("users.username")
+			.notNullable();
+		articlesTable
+			.timestamp("created_at", { useTz: false })
+			.defaultTo(knex.fn.now());
 	});
 };
 
 exports.down = function(knex) {
-	console.log("drop articles table");
 	return knex.schema.dropTable("articles");
 };

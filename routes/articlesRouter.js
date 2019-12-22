@@ -2,13 +2,13 @@ const articlesRouter = require("express").Router();
 const { handle405s } = require("../errors/errors");
 const {
 	sendArticles,
-	sendArticleByArticle_Id,
+	sendArticleByArticleId,
 	modifyArticleByID
 } = require("../controllers/article_controller");
 
 const {
-	sendCommentsByArticle_Id,
-	uploadCommentByArticle_Id
+	sendCommentsByArticleId,
+	uploadCommentByArticleId
 } = require("../controllers/comment_controller");
 
 articlesRouter
@@ -18,14 +18,14 @@ articlesRouter
 
 articlesRouter
 	.route("/:article_id")
-	.get(sendArticleByArticle_Id)
+	.get(sendArticleByArticleId)
 	.patch(modifyArticleByID)
 	.all(handle405s);
 
 articlesRouter
 	.route("/:article_id/comments")
-	.get(sendCommentsByArticle_Id)
-	.post(uploadCommentByArticle_Id)
+	.get(sendCommentsByArticleId)
+	.post(uploadCommentByArticleId)
 	.all(handle405s);
 
 module.exports = articlesRouter;

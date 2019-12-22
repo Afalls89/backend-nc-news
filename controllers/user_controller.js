@@ -1,11 +1,10 @@
 const { fetchUserByUsername } = require("../models/user_model");
 
 exports.sendUserByUsername = (req, res, next) => {
-	console.log("you are in the sendUserByUsername controller function");
 	const { username } = req.params;
-	fetchUserByUsername(username)
+	fetchUserByUsername(req.params)
 		.then(user => {
-			res.status(200).send(user);
+			res.status(200).send({ user });
 		})
 		.catch(next);
 };

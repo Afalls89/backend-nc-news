@@ -155,6 +155,16 @@ describe("API Endpoints", () => {
 						});
 				});
 
+				it("returns status 200 and object with key articles with a value of an array of article objects for the author, gives empty array if author  has no articles ", () => {
+					return request(app)
+						.get("/api/articles?author=lurker")
+						.expect(200)
+						.then(({ body: { articles } }) => {
+							expect(articles).to.be.an("array");
+							expect(articles.length).to.equal(0);
+						});
+				});
+
 				it('"return status 200  and return array of articles sorted by defualt value of date', () => {
 					return request(app)
 						.get("/api/articles")
@@ -264,11 +274,13 @@ describe("API Endpoints", () => {
 						.get("/api/articles?author=notInDatabase")
 						.expect(404)
 						.then(({ body: { msg } }) => {
-							expect(msg).to.equal("No articles found for that query");
+							expect(msg).to.equal(
+								"Resource not found for author: notInDatabase"
+							);
 						});
 				});
 
-				it("returns 404 with msg of -Resource Not Found- when query topic is provided with a valid value that is not in database", () => {
+				it.only("returns 404 with msg of -Resource Not Found- when query topic is provided with a valid value that is not in database", () => {
 					return request(app)
 						.get("/api/articles?topic=notInDatabase")
 						.expect(404)
@@ -467,7 +479,6 @@ describe("API Endpoints", () => {
 						.get("/api/articles/1/comments?sort_by=votes")
 						.expect(200)
 						.then(({ body: { comments } }) => {
-							console.log(comments);
 							expect(comments).to.be.descendingBy("votes");
 						});
 				});

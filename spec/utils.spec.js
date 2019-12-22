@@ -13,7 +13,6 @@ describe("formatDates", () => {
 
 		expect(formatDates(data)).to.deep.equal([]);
 		expect(formatDates(data)).to.not.equal(data);
-		expect(formatDates(data)).to.be.an("Array");
 	});
 
 	it("if given an array of objects, return new array of objects without manuipulating the originals", () => {

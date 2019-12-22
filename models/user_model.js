@@ -1,7 +1,6 @@
 const knex = require("../db/connection");
 
-exports.fetchUserByUsername = username => {
-	console.log("you are in the fetchUserByUsername model function");
+exports.fetchUserByUsername = ({ username }) => {
 	return knex
 		.select("*")
 		.from("users")
@@ -13,6 +12,23 @@ exports.fetchUserByUsername = username => {
 					msg: `No user found for username: ${username}`
 				});
 			}
-			return { user: user[0] };
+			return user[0];
+		});
+};
+
+exports.checkAuthorExists = ({ author }) => {
+	console.log(author);
+	return knex
+		.from("users")
+		.select("*")
+		.modify(query => {
+			if (author) query.where("username", author);
+		})
+		.then(([authors]) => {
+			if (!authors)
+				return Promise.reject({
+					status: 404,
+					msg: `Resource not found for author: ${author}`
+				});
 		});
 };

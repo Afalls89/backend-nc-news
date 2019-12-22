@@ -6,7 +6,6 @@ exports.fetchArticles = ({
 	author,
 	topic
 }) => {
-	console.log("you are in the fetchArticles model function");
 	const validOrder = ["asc", "desc"];
 	if (!validOrder.includes(order)) {
 		return Promise.reject({
@@ -31,20 +30,19 @@ exports.fetchArticles = ({
 			if (author) query.where({ "articles.author": author });
 			if (topic) query.where({ topic });
 		})
-		.orderBy(sort_by, order)
-		.then(articles => {
-			if (articles.length === 0) {
-				return Promise.reject({
-					status: 404,
-					msg: "No articles found for that query"
-				});
-			}
-			return articles;
-		});
+		.orderBy(sort_by, order);
+	// .then(articles => {
+	// 	if (articles.length === 0) {
+	// 		return Promise.reject({
+	// 			status: 404,
+	// 			msg: "No articles found for that query"
+	// 		});
+	// 	}
+	// 	return articles;
+	// });
 };
 
-exports.fetchArticleByArticle_Id = ({ article_id }) => {
-	console.log("you are in the fetchArticleByArticle_Id model function");
+exports.fetchArticleByArticleId = ({ article_id }) => {
 	return knex
 		.select("articles.*")
 		.from("articles")
@@ -64,7 +62,6 @@ exports.fetchArticleByArticle_Id = ({ article_id }) => {
 };
 
 exports.updateArticleByID = ({ article_id }, { inc_vote }) => {
-	console.log("you are in the updateArticleByID  model function");
 	return knex
 		.from("articles")
 		.where("article_id", "=", article_id)
@@ -82,7 +79,6 @@ exports.updateArticleByID = ({ article_id }, { inc_vote }) => {
 };
 
 exports.checkArticleExists = ({ article_id }) => {
-	console.log("you are in the checkArticleExists  model function");
 	return knex
 		.from("articles")
 		.select("*")
