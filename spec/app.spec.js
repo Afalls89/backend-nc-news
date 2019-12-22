@@ -165,6 +165,16 @@ describe("API Endpoints", () => {
 						});
 				});
 
+				it("returns status 200 and object with key articles with a value of an array of article objects for the topic, gives empty array if topic  has no articles ", () => {
+					return request(app)
+						.get("/api/articles?topic=paper")
+						.expect(200)
+						.then(({ body: { articles } }) => {
+							expect(articles).to.be.an("array");
+							expect(articles.length).to.equal(0);
+						});
+				});
+
 				it('"return status 200  and return array of articles sorted by defualt value of date', () => {
 					return request(app)
 						.get("/api/articles")
@@ -280,18 +290,20 @@ describe("API Endpoints", () => {
 						});
 				});
 
-				it.only("returns 404 with msg of -Resource Not Found- when query topic is provided with a valid value that is not in database", () => {
+				it("returns 404 with msg of -Resource Not Found- when query topic is provided with a valid value that is not in database", () => {
 					return request(app)
 						.get("/api/articles?topic=notInDatabase")
 						.expect(404)
 						.then(({ body: { msg } }) => {
-							expect(msg).to.equal("No articles found for that query");
+							expect(msg).to.equal(
+								"Resource not found for slug: notInDatabase"
+							);
 						});
 				});
 			});
 		});
 
-		describe("articles/:article_id", () => {
+		describe("/articles/:article_id", () => {
 			describe("INVALID METHODS", () => {
 				it("returns status: 405, with object containing message of  Method not allowed", () => {
 					const invalidMethods = ["put", "delete"];
@@ -402,10 +414,29 @@ describe("API Endpoints", () => {
 							expect(msg).to.equal("Bad Request");
 						});
 				});
+
+				// it.only("returns 101 and unchanged article info when req.body is empty", () => {
+				// 	return request(app)
+				// 		.patch("/api/articles/1")
+				// 		.send()
+				// 		.expect(101)
+				// 		.then(({ body: { article } }) => {
+				// 			expect(article).to.contain.keys(
+				// 				"article_id",
+				// 				"title",
+				// 				"topic",
+				// 				"author",
+				// 				"body",
+				// 				"created_at",
+				// 				"votes"
+				// 			);
+				// 			expect(article.votes).to.equal(100);
+				// 		});
+				// });
 			});
 		});
 
-		describe("/api/articles/:article_id/comments", () => {
+		describe("/articles/:article_id/comments", () => {
 			describe("INVALID METHODS", () => {
 				it("returns status: 405, with object containing message of  Method not allowed", () => {
 					const invalidMethods = ["put", "delete", "patch"];
@@ -559,7 +590,7 @@ describe("API Endpoints", () => {
 			});
 		});
 
-		describe("/api/comments/:comment_id", () => {
+		describe("/comments/:comment_id", () => {
 			describe("INVALID METHODS", () => {
 				it("returns status: 405, with object containing message of  Method not allowed", () => {
 					const invalidMethods = ["get", "put", "post"];

@@ -17,7 +17,6 @@ exports.fetchUserByUsername = ({ username }) => {
 };
 
 exports.checkAuthorExists = ({ author }) => {
-	console.log(author);
 	return knex
 		.from("users")
 		.select("*")

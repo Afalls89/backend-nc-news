@@ -31,15 +31,6 @@ exports.fetchArticles = ({
 			if (topic) query.where({ topic });
 		})
 		.orderBy(sort_by, order);
-	// .then(articles => {
-	// 	if (articles.length === 0) {
-	// 		return Promise.reject({
-	// 			status: 404,
-	// 			msg: "No articles found for that query"
-	// 		});
-	// 	}
-	// 	return articles;
-	// });
 };
 
 exports.fetchArticleByArticleId = ({ article_id }) => {
@@ -61,7 +52,7 @@ exports.fetchArticleByArticleId = ({ article_id }) => {
 		});
 };
 
-exports.updateArticleByID = ({ article_id }, { inc_vote }) => {
+exports.updateArticleByID = ({ article_id }, { inc_vote = 0 }) => {
 	return knex
 		.from("articles")
 		.where("article_id", "=", article_id)

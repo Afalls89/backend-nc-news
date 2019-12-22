@@ -34,7 +34,7 @@ exports.insertCommentByArticleId = (dataToInsert, { article_id }) => {
 		});
 };
 
-exports.updateCommentByCommentId = ({ inc_vote }, { comment_id }) => {
+exports.updateCommentByCommentId = ({ inc_vote = 0 }, { comment_id }) => {
 	return knex
 		.from("comments")
 		.where("comment_id", "=", comment_id)

@@ -5,9 +5,14 @@ const {
 } = require("../models/article_model");
 
 const { checkAuthorExists } = require("../models/user_model");
+const { checkTopicExists } = require("../models/topic_model");
 
 exports.sendArticles = (req, res, next) => {
-	Promise.all([fetchArticles(req.query), checkAuthorExists(req.query)])
+	Promise.all([
+		fetchArticles(req.query),
+		checkAuthorExists(req.query),
+		checkTopicExists(req.query)
+	])
 
 		.then(([articles]) => {
 			res.status(200).send({ articles });
@@ -27,7 +32,14 @@ exports.modifyArticleByID = (req, res, next) => {
 	const contentToUpdate = req.body;
 	updateArticleByID(req.params, contentToUpdate)
 		.then(article => {
+			// console.log({ article });
+			// if (!req.body.hasOwnProperty(req.body)) {
+			// 	console.log(">>>>>>>>>>>>>>>>>");
+			// 	res.status(101).send({ article });
+			// } else {
+			// 	console.log("<<<<<<<<<<<<<<<<<");
 			res.status(200).send({ article });
+			// }
 		})
 		.catch(next);
 };
