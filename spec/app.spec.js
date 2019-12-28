@@ -544,21 +544,26 @@ describe("API Endpoints", () => {
 						})
 						.then(({ body: { comment } }) => {
 							expect(comment).to.be.an("object");
-							expect(comment).to.contain.keys("comment_id", "author", "body");
+							expect(comment).to.contain.keys(
+								"comment_id",
+								"author",
+								"body",
+								"article_id"
+							);
 							expect(comment.author).to.equal("butter_bridge");
 						});
 				});
 
 				it("returns status 404 when given valid input for article_id but not found in database", () => {
 					return request(app)
-						.post("/api/articles/1000/comments")
+						.post("/api/articles/10000/comments")
 						.send({
 							username: "butter_bridge",
 							body: "ITS CHRISTMAS"
 						})
-						.expect(400)
+						.expect(404)
 						.then(({ body: { msg } }) => {
-							expect(msg).to.equal("Bad Request");
+							expect(msg).to.equal("Resource not found for article_id: 10000");
 						});
 				});
 
@@ -579,7 +584,7 @@ describe("API Endpoints", () => {
 					return request(app)
 						.post("/api/articles/2/comments")
 						.send({
-							user: "butter_bridge",
+							notAKey: "butter_bridge",
 							body: "ITS CHRISTMAS"
 						})
 						.expect(400)

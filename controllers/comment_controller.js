@@ -18,7 +18,11 @@ exports.sendCommentsByArticleId = (req, res, next) => {
 };
 
 exports.uploadCommentByArticleId = (req, res, next) => {
-	insertCommentByArticleId(req.body, req.params)
+	checkArticleExists(req.params)
+		.then(() => {
+			return insertCommentByArticleId(req.body, req.params);
+		})
+
 		.then(comment => {
 			res.status(201).send({ comment });
 		})
