@@ -16,9 +16,7 @@ const baseConfig = {
 const customConfig = {
 	production: {
 		connection: {
-			database: `${DB_URL}?ssl=true`,
-			username: username,
-			password: password
+			database: `${DB_URL}?ssl=true`
 		}
 	},
 	development: {
