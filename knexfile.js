@@ -1,6 +1,6 @@
-const DB_URL =
-	"postgres://eevqnrscmqdjhq:955fae58d9d27edb5dc38dada0497dffe39e80430cab1318bc0f15780ec7cb62@ec2-54-163-234-44.compute-1.amazonaws.com:5432/dfhu4bob6nqu6e";
 const ENV = process.env.NODE_ENV || "development";
+
+const { DB_URL } = process.env;
 
 const { username, password } = require("./credentials");
 
@@ -16,9 +16,7 @@ const baseConfig = {
 
 const customConfig = {
 	production: {
-		connection: {
-			database: `${DB_URL}?ssl=true`
-		}
+		connection: `${DB_URL}?ssl=true`
 	},
 	development: {
 		connection: {
