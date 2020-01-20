@@ -32,6 +32,8 @@ git init -y
 
 ### Prerequisites
 
+Node.js version needs to be .... or higher.
+
 dependencies that need to be installed to run the application:
 express: ^4.17.1,
 knex: ^0.20.4,
@@ -41,9 +43,10 @@ Intalling dependencies:
 
 navigate to the route directory of your projects repository using VScode or terminal then type the following:
 
-npm i express knex pg
-
 ```
+npm i express knex pg
+```
+
 devDependencies that need to be installed to perform testing of the application:
 chai": ^4.2.0,
 chai-sorted: ^0.2.0,
@@ -54,6 +57,7 @@ Intalling development dependencies:
 
 navigate to the route directory of your projects repository using VScode or terminal then type the following:
 
+```
 npm i chai chai-sorted mocha supertest -D
 
 ```
@@ -61,6 +65,40 @@ npm i chai chai-sorted mocha supertest -D
 ### Installing
 
 A step by step series of examples that tell you how to get a development env running
+
+creating the following scripts in your package.json:
+
+```
+		"setup-dbs": "psql -f ./db/setup.sql",
+		"seed": "knex seed:run",
+		"test-utils": "mocha spec/utils.spec.js",
+		"test": "mocha spec/app.spec.js",
+		"migrate-make": "knex migrate:make",
+		"migrate-latest": "knex migrate:latest",
+		"migrate-rollback": "knex migrate:rollback",
+```
+
+Create a local database
+
+run the following script:
+
+```
+npm run setup-dbs
+```
+
+Seed the Database with development data by runnning the following script:
+
+```
+npm run seed
+```
+
+you can use the following scripts to roll your database version forwards (latest) and backwards (rollback):
+
+```
+npm run migrate-latest
+
+npm run migrate-rollback
+```
 
 Say what the step will be
 
@@ -82,7 +120,12 @@ End with an example of getting some data out of the system or using it for a lit
 
 ## Running the tests
 
-Explain how to run the automated tests for this system
+In order to run the application and utils tests, run the follwing scripts:
+
+```
+npm test-utils
+npm test
+```
 
 ### Break down into end to end tests
 
@@ -106,7 +149,9 @@ Give an example
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+Please click here for the Hosted database:
+
+[Heroku] https://be-nc-news-2.herokuapp.com/api - link to hosted webpage
 
 ## Built With
 
