@@ -375,6 +375,16 @@ describe("API Endpoints", () => {
 						});
 				});
 
+				it("returns status 200 and an object with key of article and value of object representing article 1 with update votes = 101", () => {
+					return request(app)
+						.patch("/api/articles/1")
+						.send({ inc_vote: 1 })
+						.expect(200)
+						.then(({ body: { article } }) => {
+							expect(article.votes).to.equal(101);
+						});
+				});
+
 				it("returns status 200 and an object with key of article and value of object representing article 1 with update vote = 99", () => {
 					return request(app)
 						.patch("/api/articles/1")
@@ -415,24 +425,15 @@ describe("API Endpoints", () => {
 						});
 				});
 
-				// it.only("returns 101 and unchanged article info when req.body is empty", () => {
-				// 	return request(app)
-				// 		.patch("/api/articles/1")
-				// 		.send()
-				// 		.expect(101)
-				// 		.then(({ body: { article } }) => {
-				// 			expect(article).to.contain.keys(
-				// 				"article_id",
-				// 				"title",
-				// 				"topic",
-				// 				"author",
-				// 				"body",
-				// 				"created_at",
-				// 				"votes"
-				// 			);
-				// 			expect(article.votes).to.equal(100);
-				// 		});
-				// });
+				it("returns status 200 and responds with unchanged votes", () => {
+					return request(app)
+						.patch("/api/articles/1")
+						.send({})
+						.expect(200)
+						.then(({ body: { article } }) => {
+							expect(article.votes).to.equal(100);
+						});
+				});
 			});
 		});
 
@@ -592,6 +593,18 @@ describe("API Endpoints", () => {
 							expect(msg).to.equal("Bad Request");
 						});
 				});
+
+				it("returns status 400 when given invalid input in the request body", () => {
+					return request(app)
+						.post("/api/articles/2/comments")
+						.send({
+							username: "butter_bridge"
+						})
+						.expect(400)
+						.then(({ body: { msg } }) => {
+							expect(msg).to.equal("Bad Request");
+						});
+				});
 			});
 		});
 
@@ -620,6 +633,17 @@ describe("API Endpoints", () => {
 							expect(comment.votes).to.equal(17);
 						});
 				});
+
+				it("returns status 200 and an object with key of comment and value of object representing updateed comment", () => {
+					return request(app)
+						.patch("/api/comments/1")
+						.send({})
+						.expect(200)
+						.then(({ body: { comment } }) => {
+							expect(comment.votes).to.equal(16);
+						});
+				});
+
 				it("returns status 200 and an object with key of comment and value of object representing updateed comment", () => {
 					return request(app)
 						.patch("/api/comments/1")

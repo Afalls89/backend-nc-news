@@ -1,4 +1,4 @@
-# Project Title
+# `Project Title`
 
 To construct and host a backend server to store information relating to northcoder news. The Information stored includes topics, users, articles and comments. functioanlity will involve the ability to:
 
@@ -18,28 +18,35 @@ To construct and host a backend server to store information relating to northcod
 - update comments by comment ID
 - delete comments by comment ID
 
-## Getting Started
+---
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+## `Getting Started`
+
+These instructions will provide you with a copy of the project on your local machine for development and testing purposes. See deployment for a lonk to a hosted system. notes on how to deploy the project on a live system.
 
 On your local machine using termianl navigate to the directory where you want the repository to be situated.
 
 in the terminal type:
 
+```
 git clone "Repository URL"
 
 git init -y
+```
 
-### Prerequisites
+### `Prerequisites`
 
 Node.js version needs to be .... or higher.
 
 dependencies that need to be installed to run the application:
-express: ^4.17.1,
-knex: ^0.20.4,
-pg: ^7.14.0
 
-Intalling dependencies:
+- express: ^4.17.1,
+- knex: ^0.20.4,
+- pg: ^7.14.0
+
+---
+
+### `Intalling dependencies:`
 
 navigate to the route directory of your projects repository using VScode or terminal then type the following:
 
@@ -47,13 +54,15 @@ navigate to the route directory of your projects repository using VScode or term
 npm i express knex pg
 ```
 
+---
+
+### `Intalling development dependencies:`
+
 devDependencies that need to be installed to perform testing of the application:
 chai": ^4.2.0,
 chai-sorted: ^0.2.0,
 mocha: ^6.2.2,
 supertest: ^4.0.2
-
-Intalling development dependencies:
 
 navigate to the route directory of your projects repository using VScode or terminal then type the following:
 
@@ -62,7 +71,9 @@ npm i chai chai-sorted mocha supertest -D
 
 ```
 
-### Installing
+---
+
+### `Creating scripts`
 
 A step by step series of examples that tell you how to get a development env running
 
@@ -78,7 +89,7 @@ creating the following scripts in your package.json:
 		"migrate-rollback": "knex migrate:rollback",
 ```
 
-Create a local database
+### `Create a local database`
 
 run the following script:
 
@@ -118,7 +129,7 @@ until finished
 
 End with an example of getting some data out of the system or using it for a little demo
 
-## Running the tests
+## `Running the tests`
 
 In order to run the application and utils tests, run the follwing scripts:
 
@@ -127,7 +138,7 @@ npm test-utils
 npm test
 ```
 
-### Break down into end to end tests
+### `Break down into end to end tests`
 
 Explain what these tests test and why
 
@@ -147,7 +158,7 @@ Give an example
 
 ```
 
-## Deployment
+## `Deployment`
 
 Please click here for the Hosted database:
 
