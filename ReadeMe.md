@@ -28,15 +28,21 @@ On your local machine using termianl navigate to the directory where you want th
 
 in the terminal type:
 
-```
-git clone "Repository URL"
+```bash
+git clone <Repository URL>
+
+cd <newly created project folder>
 
 git init -y
+
+git remote remove origin
+
+git remote add origin <YOUR-GITHUB-URL>
 ```
 
 ### `Prerequisites`
 
-Node.js version needs to be .... or higher.
+Node.js version needs to be v12.10.0psgl or higher.
 
 dependencies that need to be installed to run the application:
 
@@ -87,6 +93,29 @@ creating the following scripts in your package.json:
 		"migrate-make": "knex migrate:make",
 		"migrate-latest": "knex migrate:latest",
 		"migrate-rollback": "knex migrate:rollback",
+```
+
+### `Create a knexfile.js`
+
+In the route directory create a JS file called Knexfile
+
+This file should look like this
+
+```
+// in ./knexfile.js
+const dbConfig = {
+  client: 'pg',
+  connection: {
+    database: 'imdb',
+    // for linux:
+    // username: 'Andy',
+    // password: 'passywordingtons'
+  },
+  seeds: {
+    directory: './db/seeds',
+  },
+};
+
 ```
 
 ### `Create a local database`
@@ -170,30 +199,10 @@ Please click here for the Hosted database:
 - [Maven](https://maven.apache.org/) - Dependency Management
 - [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
 
-## Contributing
+## `Versioning`
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+We use [GitHub](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
 
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
-
-## Authors
+## `Authors`
 
 - **Andrew Falls** - _Initial work_ - [Afalls89](https://github.com/Afalls89)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-- Hat tip to anyone whose code was used
-- Inspiration
-- etc
-
-```
-
-```
