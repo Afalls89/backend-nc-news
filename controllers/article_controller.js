@@ -32,14 +32,7 @@ exports.modifyArticleByID = (req, res, next) => {
 	const contentToUpdate = req.body;
 	updateArticleByID(req.params, contentToUpdate)
 		.then(article => {
-			// console.log({ article });
-			// if (!req.body.hasOwnProperty(req.body)) {
-			// 	console.log(">>>>>>>>>>>>>>>>>");
-			// 	res.status(101).send({ article });
-			// } else {
-			// 	console.log("<<<<<<<<<<<<<<<<<");
 			res.status(200).send({ article });
-			// }
 		})
 		.catch(next);
 };
