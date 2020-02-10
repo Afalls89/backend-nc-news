@@ -125,7 +125,7 @@
     }
   },
 
-  "PATCH /api/coments/:comment_id": {
+  "PATCH /api/comments/:comment_id": {
     "description": "serves an object with updated comment detials for specific comment",
     "queries": ["comment_id"],
     "request body example": {

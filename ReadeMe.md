@@ -1,16 +1,16 @@
 # `Project Title`
 
-To construct and host a backend server to store information relating to northcoder news. The Information stored includes topics, users, articles and comments. functioanlity will involve the ability to:
+To construct and host a backend server to store information relating to northcoder news. The Information stored includes topics, users, articles and comments. functionality will involve the ability to:
 
 - request information on all topics
-- request user information by user ID
+- request user information by username
 - request article information by article ID
 - update an article by article ID
 - Post new comments to articles by article ID
-- request infomation of all comments from an article by aticle ID
+- request information of all comments from an article by article ID
   - information can be sorted by any valid column, defaults to created_at.
   - information can be ordered in ascending or descending order, defaults to descending.
-- request informtion on all articles
+- request information on all articles
   - information can be sorted by any valid column, defaults to created_at.
   - information can be ordered in ascending or descending order, defaults to descending.
   - can filter your query to return information for articles relating to a) a specific author
@@ -22,9 +22,9 @@ To construct and host a backend server to store information relating to northcod
 
 ## `Getting Started`
 
-These instructions will provide you with a copy of the project on your local machine for development and testing purposes. See deployment for a lonk to a hosted system. notes on how to deploy the project on a live system.
+These instructions will provide you with a copy of the project on your local machine for development and testing purposes. See deployment for a link to a hosted system. notes on how to deploy the project on a live system.
 
-On your local machine using termianl navigate to the directory where you want the repository to be situated.
+On your local machine using terminal navigate to the directory where you want the repository to be situated.
 
 in the terminal type:
 
@@ -42,7 +42,7 @@ git remote add origin <YOUR-GITHUB-URL>
 
 ### `Prerequisites`
 
-Node.js version needs to be v12.10.0psgl or higher.
+Node.js version needs to be v12.10.0 psgl or higher.
 
 dependencies that need to be installed to run the application:
 
@@ -52,7 +52,7 @@ dependencies that need to be installed to run the application:
 
 ---
 
-### `Intalling dependencies:`
+### `Installing dependencies:`
 
 navigate to the route directory of your projects repository using VScode or terminal then type the following:
 
@@ -62,7 +62,7 @@ npm i express knex pg
 
 ---
 
-### `Intalling development dependencies:`
+### `Installing development dependencies:`
 
 devDependencies that need to be installed to perform testing of the application:
 chai": ^4.2.0,
@@ -126,7 +126,7 @@ run the following script:
 npm run setup-dbs
 ```
 
-Seed the Database with development data by runnning the following script:
+Seed the Database with development data by running the following script:
 
 ```
 npm run seed
@@ -160,7 +160,7 @@ End with an example of getting some data out of the system or using it for a lit
 
 ## `Running the tests`
 
-In order to run the application and utils tests, run the follwing scripts:
+In order to run the application and utils tests, run the following scripts:
 
 ```
 npm test-utils
