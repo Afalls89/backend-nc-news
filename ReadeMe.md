@@ -1,4 +1,4 @@
-# `Project Title`
+# `NC-news`
 
 To construct and host a backend server to store information relating to northcoder news. The Information stored includes topics, users, articles and comments. functionality will involve the ability to:
 
@@ -42,13 +42,14 @@ git remote add origin <YOUR-GITHUB-URL>
 
 ### `Prerequisites`
 
-Node.js version needs to be v12.10.0 psgl or higher.
+Node.js version needs to be v12.10.0 or higher.
 
 dependencies that need to be installed to run the application:
 
 - express: ^4.17.1,
 - knex: ^0.20.4,
 - pg: ^7.14.0
+- cors: ^2.8.5
 
 ---
 
@@ -58,6 +59,15 @@ navigate to the route directory of your projects repository using VScode or term
 
 ```
 npm i express knex pg
+
+npm install cors
+
+```
+
+_important - the following code needs to be input into your App.js file above all routes_
+
+```
+app.use(cors())
 ```
 
 ---
