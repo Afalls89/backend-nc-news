@@ -31,13 +31,8 @@ in the terminal type:
 ```bash
 git clone <Repository URL>
 
-cd <newly created project folder>
+npm i
 
-git init -y
-
-git remote remove origin
-
-git remote add origin <YOUR-GITHUB-URL>
 ```
 
 ### `Prerequisites`
@@ -52,40 +47,6 @@ dependencies that need to be installed to run the application:
 - cors: ^2.8.5
 
 ---
-
-### `Installing dependencies:`
-
-navigate to the route directory of your projects repository using VScode or terminal then type the following:
-
-```
-npm i express knex pg
-
-npm install cors
-
-```
-
-_important - the following code needs to be input into your App.js file above all routes_
-
-```
-app.use(cors())
-```
-
----
-
-### `Installing development dependencies:`
-
-devDependencies that need to be installed to perform testing of the application:
-chai": ^4.2.0,
-chai-sorted: ^0.2.0,
-mocha: ^6.2.2,
-supertest: ^4.0.2
-
-navigate to the route directory of your projects repository using VScode or terminal then type the following:
-
-```
-npm i chai chai-sorted mocha supertest -D
-
-```
 
 ---
 
@@ -118,8 +79,8 @@ const dbConfig = {
   connection: {
     database: 'imdb',
     // for linux:
-    // username: 'Andy',
-    // password: 'passywordingtons'
+    // username: '',
+    // password: ''
   },
   seeds: {
     directory: './db/seeds',
@@ -150,23 +111,7 @@ npm run migrate-latest
 npm run migrate-rollback
 ```
 
-Say what the step will be
-
-```
-
-Give the example
-
-```
-
-And repeat
-
-```
-
-until finished
-
-```
-
-End with an example of getting some data out of the system or using it for a little demo
+---
 
 ## `Running the tests`
 
@@ -177,41 +122,11 @@ npm test-utils
 npm test
 ```
 
-### `Break down into end to end tests`
-
-Explain what these tests test and why
-
-```
-
-Give an example
-
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-
-Give an example
-
-```
-
-## `Deployment`
+## `Links`
 
 Please click here for the Hosted database:
 
 [Heroku] https://be-nc-news-2.herokuapp.com/api - link to hosted webpage
-
-## Built With
-
-- [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-- [Maven](https://maven.apache.org/) - Dependency Management
-- [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## `Versioning`
-
-We use [GitHub](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
 
 ## `Authors`
 
